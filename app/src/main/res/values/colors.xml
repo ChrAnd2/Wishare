@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#121212</color>
+    <color name="colorPrimaryDark">#FF000000</color>
+    <color name="colorAccent">#ff009688</color>
+    <color name="primary_background_lighter">#1A1A1A</color>
+    <color name="primary_background">#121212</color>
+    <color name="text_color_white_hint">#66ffffff</color>
+    <color name="text_color_black">#dd000000</color>
+    <color name="colorPrimaryDisabled">#D0D0D0</color>
+    <color name="code_scanner_background">#66000000</color>
+    <color name="grey">#7fffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="grey_divider">#61000000</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_white_10_opacity">#e6ffffff</color>
+    <color name="color_white_20_opacity">#ccffffff</color>
+    <color name="color_white_30_opacity">#b3ffffff</color>
+    <color name="color_white_40_opacity">#99ffffff</color>
+    <color name="color_white_50_opacity">#80ffffff</color>
+    <color name="color_white_60_opacity">#66FFFFFF</color>
+    <color name="color_white_70_opacity">#4dffffff</color>
+    <color name="color_white_80_opacity">#33ffffff</color>
+
+    <color name="color_black">#000000</color>
+    <color name="color_black_25_opacity">#de000000</color>
+    <color name="color_black_60_opacity">#66000000</color>
+    <color name="color_black_75_opacity">#40000000</color>
+    <color name="color_black_80_opacity">#33000000</color>
+</resources>

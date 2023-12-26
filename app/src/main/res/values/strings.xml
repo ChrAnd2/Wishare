@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Wishare</string>
+    <string name="edit">Edit</string>
+    <string name="empty_family_list">You are not part of any Family yet. You can either join or create one.</string>
+    <string name="create_family">Create Family</string>
+    <string name="join_family">Join Family</string>
+</resources>
