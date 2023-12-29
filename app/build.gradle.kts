@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp") version "1.9.21-1.0.16"
 }
 
 android {
@@ -59,6 +60,14 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+
+    // Navigation
+    implementation("io.github.raamcosta.compose-destinations:core:1.9.56")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.9.56")
+
+    // Dependency injection
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
