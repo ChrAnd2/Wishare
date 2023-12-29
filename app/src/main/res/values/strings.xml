@@ -1,7 +1,34 @@
 <resources>
+    <plurals name="open_wishes">
+        <item quantity="one">%1$d open wish</item>
+        <item quantity="other">%1$d open wishes</item>
+    </plurals>
+    <plurals name="assigned_wishes">
+        <item quantity="one">%1$d assigned wish</item>
+        <item quantity="other">%1$d assigned wishes</item>
+    </plurals>
     <string name="app_name">Wishare</string>
     <string name="edit">Edit</string>
     <string name="empty_family_list">You are not part of any Family yet. You can either join or create one.</string>
     <string name="create_family">Create Family</string>
     <string name="join_family">Join Family</string>
+    <string name="delete_family">Delete Family</string>
+    <string name="leave_family">Leave Family</string>
+    <string name="family_members_title">Family members:</string>
+    <string name="remove_family_member">Remove family member</string>
+    <string name="add_family_member">Add family member</string>
+    <string name="wish_state_open">Open</string>
+    <string name="wish_state_reserved">Reserved</string>
+    <string name="wish_state_bought">Bought</string>
+    <string name="wish_state_handed_over">Handed Over</string>
+    <string name="reserve_wish">Reserve</string>
+    <string name="wish_cancel_reservation">Cancel reservation</string>
+    <string name="wish_bought">Bought</string>
+    <string name="wish_handed_over">Handed over</string>
+    <string name="wish_bought_by">Bought by %1$s</string>
+    <string name="wish_reserved_by">Reserved by %1$s</string>
+    <string name="bottom_menu_families">Families</string>
+    <string name="bottom_menu_wishes">Wishes</string>
+    <string name="bottom_menu_gifts">Gifts</string>
+    <string name="edit_wish">Edit</string>
 </resources>
