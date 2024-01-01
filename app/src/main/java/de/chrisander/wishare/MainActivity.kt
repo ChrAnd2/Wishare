@@ -10,37 +10,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import de.chrisander.wishare.di.appPreviewModules
+import de.chrisander.wishare.presentation.di.previewModule
+import de.chrisander.wishare.presentation.di.uiModule
+import de.chrisander.wishare.presentation.home.HomeScreen
+import de.chrisander.wishare.presentation.home.my_wishes.MyWishesScreen
 import de.chrisander.wishare.ui.theme.WishareTheme
+import org.koin.compose.KoinApplication
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             WishareTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                HomeScreen()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    WishareTheme {
-        Greeting("Android")
+fun MainPreview() {
+    KoinApplication(application = {
+        modules(appPreviewModules)
+    }) {
+        WishareTheme {
+            HomeScreen()
+        }
     }
 }
