@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version "1.9.21-1.0.16"
+    id("kotlin-parcelize")
 }
 
 android {
@@ -60,14 +61,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-
-    // Navigation
-    implementation("io.github.raamcosta.compose-destinations:core:1.9.56")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.9.56")
-
-    // Dependency injection
-    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
-
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -75,4 +68,21 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+
+    // Navigation
+    implementation("io.github.raamcosta.compose-destinations:core:1.9.56")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.9.56")
+
+    // Dependency injection
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+    testImplementation("io.insert-koin:koin-test:3.5.3")
+
+    //Timber - Logging
+    implementation("com.jakewharton.timber:timber:5.0.1")
+
+    //Moshi - Json Parser
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    implementation("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    implementation("com.squareup.moshi:moshi-adapters:1.14.0")
 }
