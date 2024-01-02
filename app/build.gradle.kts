@@ -78,11 +78,14 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-compose:3.5.3")
     testImplementation("io.insert-koin:koin-test:3.5.3")
 
-    //Timber - Logging
+    // Timber - Logging
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    //Moshi - Json Parser
+    // Moshi - Json Parser
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
     implementation("com.squareup.moshi:moshi-adapters:1.14.0")
+
+    // Kotlin Result
+    implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.18")
 }

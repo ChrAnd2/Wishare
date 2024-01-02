@@ -31,11 +31,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.chrisander.wishare.R
+import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.domain.model.FamilyMember
 import de.chrisander.wishare.domain.model.Wish
 import de.chrisander.wishare.domain.model.WishState
 import de.chrisander.wishare.presentation.di.PreviewData
 import de.chrisander.wishare.ui.theme.WishareTheme
+import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import java.net.URL
@@ -65,7 +67,11 @@ fun MyWishListItem(
                 textAlign = TextAlign.Center
             )
             Divider(modifier = Modifier.padding(4.dp), thickness = 1.dp)
-            WishInfoItem(text = myWish.description, iconRes = R.drawable.ic_description)
+            WishInfoItem(
+                modifier = Modifier.padding(end = 8.dp),
+                text = myWish.description,
+                iconRes = R.drawable.ic_description
+            )
             Divider(modifier = Modifier.padding(4.dp), thickness = 1.dp)
             if(myWish.url != null) {
                 ClickableWishInfoItem(
@@ -155,7 +161,9 @@ fun ClickableWishInfoItem(
 @Preview(showBackground = true)
 @Composable
 fun MyWishListItemPreview(){
-    WishareTheme {
-        MyWishListItem(myWish = koinInject(named(PreviewData.MustermannChristianWish)))
+    KoinApplication(application = { modules(appPreviewModules)}) {
+        WishareTheme {
+            MyWishListItem(myWish = koinInject(named(PreviewData.MustermannChristianWish)))
+        }
     }
 }

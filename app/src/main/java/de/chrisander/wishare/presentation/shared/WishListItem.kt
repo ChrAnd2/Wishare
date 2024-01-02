@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.chrisander.wishare.R
+import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.domain.model.FamilyMember
 import de.chrisander.wishare.domain.model.Wish
 import de.chrisander.wishare.domain.model.WishState
@@ -38,6 +39,7 @@ import de.chrisander.wishare.domain.util.FamilyMemberId
 import de.chrisander.wishare.presentation.di.PreviewData
 import de.chrisander.wishare.ui.theme.WishareTheme
 import de.chrisander.wishare.ui.theme.wishByOther
+import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 import org.koin.java.KoinJavaComponent.inject
@@ -53,6 +55,7 @@ fun WishListItem(
     getMemberById: (FamilyMemberId) -> FamilyMember,
     onReserveClicked: (Wish) -> Unit = {},
     onBoughtClicked: (Wish) -> Unit = {},
+    onHandedOverClicked: (Wish) -> Unit = {},
     onCancelReservationClicked: (Wish) -> Unit = {},
 ) {
     val uriHandler = LocalUriHandler.current
@@ -60,6 +63,17 @@ fun WishListItem(
         modifier = modifier.fillMaxWidth()
     ) {
         Column {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                text = wish.name,
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                ),
+                textAlign = TextAlign.Center
+            )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     modifier = Modifier.weight(0.25f),
@@ -68,18 +82,6 @@ fun WishListItem(
                     textAlign = TextAlign.Center
                 )
                 Column(modifier = Modifier.weight(0.8f)) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 4.dp),
-                        text = wish.name,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp
-                        ),
-                        textAlign = TextAlign.Center
-                    )
-                    Divider(modifier = Modifier.padding(4.dp), thickness = 1.dp)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Image(
                             modifier = Modifier.padding(end = 8.dp),
@@ -156,8 +158,9 @@ fun WishListItem(
                             .weight(0.5f),
                         onClick = {
                             when(wish.state){
-                                is WishState.Bought -> onBoughtClicked(wish)
-                                is WishState.Reserved -> onReserveClicked(wish)
+                                is WishState.Open -> onReserveClicked(wish)
+                                is WishState.Reserved -> onBoughtClicked(wish)
+                                is WishState.Bought -> onHandedOverClicked(wish)
                                 else -> {}
                             }
                         },
@@ -208,12 +211,14 @@ fun WishListItem(
 @Preview(showBackground = true)
 @Composable
 fun WishListItemPreview() {
-    val previewMember: FamilyMember = koinInject(named(PreviewData.MustermannChristianMember))
-    WishareTheme {
-        WishListItem(
-            wish = koinInject(named(PreviewData.MustermannChristianWish)),
-            ownerId = koinInject(named(PreviewData.MustermannSophieId)),
-            getMemberById = { previewMember }
-        )
+    KoinApplication(application = { modules(appPreviewModules) }) {
+        val previewMember: FamilyMember = koinInject(named(PreviewData.MustermannChristianMember))
+        WishareTheme {
+            WishListItem(
+                wish = koinInject(named(PreviewData.MustermannChristianWish)),
+                ownerId = koinInject(named(PreviewData.MustermannSophieId)),
+                getMemberById = { previewMember }
+            )
+        }
     }
 }

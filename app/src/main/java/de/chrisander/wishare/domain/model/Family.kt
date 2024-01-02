@@ -1,14 +1,15 @@
 package de.chrisander.wishare.domain.model
 
-import android.graphics.Bitmap
 import android.os.Parcelable
-import com.squareup.moshi.JsonClass
+import de.chrisander.wishare.domain.util.FamilyId
 import de.chrisander.wishare.domain.util.FamilyMemberId
 import kotlinx.parcelize.Parcelize
+import java.util.UUID
 
 @Parcelize
 data class Family(
+    val id: FamilyId = UUID.randomUUID(),
     val name: String,
-    val image: Bitmap,
+    val image: UiImage,
     val memberIds: List<FamilyMemberId>
 ): Parcelable

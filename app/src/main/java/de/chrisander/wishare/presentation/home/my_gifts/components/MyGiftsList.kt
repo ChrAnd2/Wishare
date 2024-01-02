@@ -3,10 +3,14 @@ package de.chrisander.wishare.presentation.home.my_gifts.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.domain.model.FamilyMember
 import de.chrisander.wishare.domain.model.Wish
@@ -26,8 +30,13 @@ fun MyGiftsList(
     getMemberById: (FamilyMemberId) -> FamilyMember,
     onReserveClicked: (Wish) -> Unit = {},
     onBoughtClicked: (Wish) -> Unit = {},
+    onHandedOverClicked: (Wish) -> Unit = {},
     onCancelReservationClicked: (Wish) -> Unit = {},
 ){
+    val sortedGifts = remember(gifts) {
+        gifts.sortedBy { it.creationDate }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -35,13 +44,15 @@ fun MyGiftsList(
                 color = MaterialTheme.colorScheme.background
             )
     ){
-        gifts.forEach {
+        sortedGifts.forEach {
             WishListItem(
+                modifier = Modifier.padding(8.dp),
                 wish = it,
                 ownerId = ownerId,
                 getMemberById = getMemberById,
                 onReserveClicked = onReserveClicked,
                 onBoughtClicked = onBoughtClicked,
+                onHandedOverClicked = onHandedOverClicked,
                 onCancelReservationClicked = onCancelReservationClicked,
             )
         }

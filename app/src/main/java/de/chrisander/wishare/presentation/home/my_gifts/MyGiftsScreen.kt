@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.domain.model.FamilyMember
 import de.chrisander.wishare.domain.model.Wish
@@ -21,7 +22,8 @@ import org.koin.core.qualifier.named
 @Composable
 fun MyGiftsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyGiftsViewModel = koinViewModel()
+    viewModel: MyGiftsViewModel = koinViewModel(),
+    navigator: DestinationsNavigator
 ){
     val state = viewModel.state.value
 
@@ -35,9 +37,10 @@ fun MyGiftsScreen(
         modifier = modifier,
         screenState = state,
         getMemberById = viewModel::getMemberById,
-        onReserveClicked = { MyGiftsUiEvent.OnReserveClicked(it) },
-        onBoughtClicked = { MyGiftsUiEvent.OnBoughtClicked(it) },
-        onCancelReservationClicked = { MyGiftsUiEvent.OnCancelReservationClicked(it) }
+        onReserveClicked = { viewModel.onEvent(MyGiftsUiEvent.OnReserveClicked(it)) },
+        onBoughtClicked = { viewModel.onEvent(MyGiftsUiEvent.OnBoughtClicked(it)) },
+        onHandedOverClicked = { viewModel.onEvent(MyGiftsUiEvent.OnHandedOverClicked(it)) },
+        onCancelReservationClicked = { viewModel.onEvent(MyGiftsUiEvent.OnCancelReservationClicked(it)) }
     )
 
 }
@@ -49,17 +52,20 @@ fun MyGiftsContent(
     getMemberById: (FamilyMemberId) -> FamilyMember,
     onReserveClicked: (Wish) -> Unit = {},
     onBoughtClicked: (Wish) -> Unit = {},
+    onHandedOverClicked: (Wish) -> Unit = {},
     onCancelReservationClicked: (Wish) -> Unit = {},
 ) {
     when(screenState){
         MyGiftsScreenState.Empty -> EmptyMyGiftsScreen(modifier)
         is MyGiftsScreenState.GiftsList -> {
             MyGiftsList(
+                modifier = modifier,
                 gifts = screenState.gifts,
                 ownerId = screenState.ownerId,
                 getMemberById = getMemberById,
                 onReserveClicked = onReserveClicked,
                 onBoughtClicked = onBoughtClicked,
+                onHandedOverClicked = onHandedOverClicked,
                 onCancelReservationClicked = onCancelReservationClicked,
             )
         }

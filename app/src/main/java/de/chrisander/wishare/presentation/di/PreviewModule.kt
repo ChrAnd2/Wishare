@@ -1,8 +1,9 @@
 package de.chrisander.wishare.presentation.di
 
-import android.graphics.Bitmap
+import de.chrisander.wishare.R
 import de.chrisander.wishare.domain.model.Family
 import de.chrisander.wishare.domain.model.FamilyMember
+import de.chrisander.wishare.domain.model.UiImage
 import de.chrisander.wishare.domain.model.Wish
 import de.chrisander.wishare.domain.model.WishState
 import de.chrisander.wishare.domain.util.FamilyMemberId
@@ -202,7 +203,7 @@ val previewModule = module {
         single<Family>(named(PreviewData.MustermannFamily)) {
             Family(
                 name = "Mustermann",
-                image = get(),
+                image = UiImage.Static(R.drawable.ic_family),
                 memberIds = get<List<FamilyMember>>(named(PreviewData.MustermannMembers)).map { it.id }
             )
         }
@@ -319,15 +320,12 @@ val previewModule = module {
         single<Family>(named(PreviewData.MuellerFamily)) {
             Family(
                 name = "Mueller",
-                image = get(),
+                image = UiImage.Static(R.drawable.ic_family),
                 memberIds = get<List<FamilyMember>>(named(PreviewData.MuellerMembers)).map { it.id }
             )
         }
     //endregion Mueller
 
-    single<Bitmap> {
-        Bitmap.createBitmap(100, 100, Bitmap.Config.RGBA_F16)
-    }
     single<List<Family>>(named(PreviewData.Families)) {
         listOf(
             get(named(PreviewData.MustermannFamily)),

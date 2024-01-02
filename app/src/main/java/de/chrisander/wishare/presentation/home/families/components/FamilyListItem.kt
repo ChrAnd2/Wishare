@@ -17,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -26,26 +28,25 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import de.chrisander.wishare.R
+import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.domain.model.Family
-import de.chrisander.wishare.domain.model.FamilyMember
 import de.chrisander.wishare.presentation.di.PreviewData
+import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named
 
 @Composable
 fun FamilyListItem(
     family: Family,
-    onClicked: (Family) -> Unit = {},
-    onEditClicked: (Family) -> Unit = {},
+    onFamilyClicked: (Family) -> Unit = {},
+    onEditFamilyClicked: (Family) -> Unit = {},
 ) {
     Card(
         modifier = Modifier
             .height(200.dp)
             .clickable {
-                onClicked(family)
+                onFamilyClicked(family)
             },
         shape = RoundedCornerShape(15.dp),
         elevation = CardDefaults.cardElevation(
@@ -55,7 +56,8 @@ fun FamilyListItem(
         Box {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                bitmap = family.image.asImageBitmap(),
+                bitmap = family.image.getBitmap(LocalContext.current).asImageBitmap(),
+                contentScale = ContentScale.Crop,
                 contentDescription = family.name
             )
             Box(modifier = Modifier
@@ -73,17 +75,18 @@ fun FamilyListItem(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(12.dp)
-                    .clickable {
-                        onEditClicked(family)
-                    },
+                    .padding(12.dp),
                 contentAlignment = Alignment.TopEnd
             ) {
                 Image(
                     modifier = Modifier
-                        .size(15.dp, 15.dp),
+                        .size(25.dp, 25.dp)
+                        .clickable {
+                            onEditFamilyClicked(family)
+                        },
                     painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = stringResource(id = R.string.edit)
+                    contentDescription = stringResource(id = R.string.edit),
+                    colorFilter = ColorFilter.tint(Color.White)
                 )
             }
             Box(
@@ -107,7 +110,11 @@ fun FamilyListItem(
 @Preview(showBackground = true)
 @Composable
 fun FamilyListItemPreview() {
-    FamilyListItem(
-        family = koinInject(named(PreviewData.MustermannFamily))
-    )
+    KoinApplication(application = {
+        modules(appPreviewModules)
+    }) {
+        FamilyListItem(
+            family = koinInject(named(PreviewData.MustermannFamily))
+        )
+    }
 }

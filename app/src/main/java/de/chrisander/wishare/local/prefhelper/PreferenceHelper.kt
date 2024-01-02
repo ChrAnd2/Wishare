@@ -16,7 +16,7 @@ import de.chrisander.wishare.local.prefhelper.PreferenceConstants.SHARED_PREFS_K
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
-class PreferenceHelper constructor(
+class PreferenceHelper(
     private val c: Context
 ) : IPreferenceHelper {
 
@@ -58,15 +58,16 @@ class PreferenceHelper constructor(
         moshi = moshi
     )
 
-    override val appOwnerId: FamilyMemberId? by c.confStore().objectNullableProp(
+    override var appOwnerId: UUID? by c.confStore().objectNullableProp(
         defValue = null,
         customName = SHARED_PREFS_KEY_APP_OWNER,
-        clazz = FamilyMemberId::class.java,
+        clazz = UUID::class.java,
         moshi = moshi
     )
-    override val appOwnerIdFlow: Flow<FamilyMemberId?> = c.confStore().flowChangesNullableObject(
+    override val appOwnerIdFlow: Flow<UUID?> = c.confStore().flowChangesNullableObject(
         key = SHARED_PREFS_KEY_APP_OWNER,
         defValue = null,
-        clazz = FamilyMemberId::class.java
+        clazz = UUID::class.java,
+        moshi = moshi
     )
 }

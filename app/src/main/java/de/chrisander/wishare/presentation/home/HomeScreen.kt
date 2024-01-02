@@ -6,10 +6,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.presentation.di.PreviewData
-import de.chrisander.wishare.presentation.di.previewModule
-import de.chrisander.wishare.presentation.di.uiModule
 import de.chrisander.wishare.presentation.home.components.BottomMenu
 import de.chrisander.wishare.presentation.home.components.BottomMenuContent
 import de.chrisander.wishare.presentation.home.families.FamiliesScreen
@@ -28,21 +28,19 @@ import org.koin.core.qualifier.named
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinViewModel(),
+    navigator: DestinationsNavigator,
 ) {
     val state = viewModel.state.value
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-            when (event) {
-                is HomeViewModelEvent.NavigateToEditFamily -> TODO()
-                HomeViewModelEvent.NavigateToCreateFamily -> TODO()
-                HomeViewModelEvent.NavigateToJoinFamily -> TODO()
-            }
+
         }
     }
 
     HomeContent(
         state = state,
+        navigator = navigator,
         onBottomMenuItemClicked = {
             viewModel.onEvent(HomeUiEvent.OnBottomMenuItemClicked(it))
         })
@@ -51,20 +49,36 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     state: HomeScreenState,
+    navigator: DestinationsNavigator = EmptyDestinationsNavigator,
     onBottomMenuItemClicked: (BottomMenuContent) -> Unit = {}
 ){
     Column {
         when(state){
-            is HomeScreenState.Families -> FamiliesScreen(modifier = Modifier.weight(1f))
-            is HomeScreenState.MyGifts -> MyWishesScreen(modifier = Modifier.weight(1f))
-            is HomeScreenState.MyWishes -> MyGiftsScreen(modifier = Modifier.weight(1f))
+            is HomeScreenState.Families -> FamiliesScreen(
+                modifier = Modifier.weight(1f),
+                navigator = navigator
+            )
+            is HomeScreenState.MyWishes -> MyWishesScreen(
+                modifier = Modifier.weight(1f),
+                navigator = navigator
+            )
+            is HomeScreenState.MyGifts -> MyGiftsScreen(
+                modifier = Modifier.weight(1f),
+                navigator = navigator
+            )
         }
+        val bottomContent = listOf(
+            BottomMenuContent.Families,
+            BottomMenuContent.MyWishes,
+            BottomMenuContent.MyGifts,
+        )
         BottomMenu(
-            items = listOf(
-                BottomMenuContent.Families,
-                BottomMenuContent.MyWishes,
-                BottomMenuContent.Gifts,
-            ),
+            items = bottomContent,
+            initialSelectedItemIndex = when(state){
+                is HomeScreenState.Families -> bottomContent.indexOf(BottomMenuContent.Families)
+                is HomeScreenState.MyWishes -> bottomContent.indexOf(BottomMenuContent.MyWishes)
+                is HomeScreenState.MyGifts -> bottomContent.indexOf(BottomMenuContent.MyGifts)
+            },
             onItemClick = onBottomMenuItemClicked
         )
     }

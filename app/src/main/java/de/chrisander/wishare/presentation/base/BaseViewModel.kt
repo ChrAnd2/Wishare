@@ -14,7 +14,7 @@ abstract class BaseViewModel<UiState, ViewModelEvent, UiEvent>: ViewModel() {
     val state: State<UiState> by lazy { _state }
 
 
-    private val _eventFlow = MutableSharedFlow<ViewModelEvent>()
+    protected val _eventFlow = MutableSharedFlow<ViewModelEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     abstract fun onEvent(event: UiEvent)

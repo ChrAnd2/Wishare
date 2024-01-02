@@ -10,9 +10,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.domain.model.Wish
 import de.chrisander.wishare.domain.model.WishState
+import de.chrisander.wishare.presentation.destinations.MyWishScreenDestination
 import de.chrisander.wishare.presentation.di.PreviewData
 import de.chrisander.wishare.presentation.di.previewModule
 import de.chrisander.wishare.presentation.di.uiModule
@@ -29,21 +31,29 @@ import org.koin.core.qualifier.named
 @Composable
 fun MyWishesScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyWishesViewModel = koinViewModel()
+    viewModel: MyWishesViewModel = koinViewModel(),
+    navigator: DestinationsNavigator
 ){
     val state = viewModel.state.value
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
-
+            when(event){
+                MyWishesViewModelEvent.NavigateToCreateWish -> {
+                    navigator.navigate(MyWishScreenDestination(wishId = null))
+                }
+                is MyWishesViewModelEvent.NavigateToEditWish -> {
+                    navigator.navigate(MyWishScreenDestination(wishId = event.wishId))
+                }
+            }
         }
     }
 
     MyWishesContent(
         modifier = modifier,
         screenState = state,
-        onCreateWishClicked = {},
-        onEditWishClicked = {}
+        onCreateWishClicked = { viewModel.onEvent(MyWishesUiEvent.OnCreateWishClicked) },
+        onEditWishClicked = { viewModel.onEvent(MyWishesUiEvent.OnEditWishClicked(it)) }
     )
 }
 
@@ -63,8 +73,9 @@ fun MyWishesContent(
         }
         is MyWishesScreenState.MyWishesList -> {
             MyWishesList(
-                modifier = modifier.padding(8.dp),
+                modifier = modifier.background(MaterialTheme.colorScheme.background).padding(8.dp),
                 wishes = screenState.wishes,
+                onCreateWishClicked = onCreateWishClicked,
                 onEditWishClicked = onEditWishClicked
             )
         }

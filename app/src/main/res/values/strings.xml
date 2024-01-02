@@ -34,4 +34,10 @@
     <string name="empty_my_wishes_list">You did not add any Wish yet. Start adding one.</string>
     <string name="create_wish">Create Wish</string>
     <string name="empty_my_gifts_list">You did not reserved or bought a gift yet. Go to a members wishes and make him a present!</string>
+    <string name="family_name_placeholder">Family name</string>
+    <string name="wish_name_placeholder">Wish title</string>
+    <string name="wish_description_placeholder">Wish description</string>
+    <string name="wish_url_placeholder">Wish url</string>
+    <string name="delete_wish">Delete Wish</string>
+    <string name="error_invalid_url">Invalid URL</string>
 </resources>

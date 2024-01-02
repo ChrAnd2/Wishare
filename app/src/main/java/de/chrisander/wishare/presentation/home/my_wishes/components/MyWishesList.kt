@@ -4,7 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,21 +29,36 @@ import org.koin.core.qualifier.named
 fun MyWishesList(
     modifier: Modifier = Modifier,
     wishes: List<Wish>,
+    onCreateWishClicked: () -> Unit = {},
     onEditWishClicked: (Wish) -> Unit = {}
 ){
-    Column(
+    val scrollState = rememberScrollState()
+    Scaffold(
         modifier = modifier
-            .fillMaxSize()
-            .background(
-                color = MaterialTheme.colorScheme.background
-            )
+            .fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background,
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { onCreateWishClicked() }
+            ) {
+                Icon(Icons.Filled.Add, null)
+            }
+        },
     ) {
-        wishes.forEach {
-            MyWishListItem(
-                modifier = Modifier.padding(8.dp),
-                myWish = it,
-                onEditWishClicked = onEditWishClicked
-            )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .verticalScroll(scrollState)
+        ) {
+            wishes.forEach {
+                MyWishListItem(
+                    modifier = Modifier.padding(8.dp),
+                    myWish = it,
+                    onEditWishClicked = onEditWishClicked
+                )
+            }
         }
     }
 }

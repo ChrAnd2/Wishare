@@ -55,7 +55,7 @@ class HomeViewModel(
                     BottomMenuContent.MyWishes -> _state.value = HomeScreenState.MyWishes(
                         myWishes = membersRepository.getAppOwner().wishes
                     )
-                    BottomMenuContent.Gifts -> _state.value = HomeScreenState.MyGifts(
+                    BottomMenuContent.MyGifts -> _state.value = HomeScreenState.MyGifts(
                         myGifts = membersRepository.getMembers().flatMap { member ->
                             member.wishes.filter { wish ->
                                 wish.state is WishState.HasByMember &&

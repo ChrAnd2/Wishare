@@ -12,6 +12,6 @@ interface IPreferenceHelper{
     var members: List<FamilyMember>
     val membersFlow: Flow<List<FamilyMember>>
 
-    val appOwnerId: FamilyMemberId?
+    var appOwnerId: FamilyMemberId?
     val appOwnerIdFlow: Flow<FamilyMemberId?>
 }

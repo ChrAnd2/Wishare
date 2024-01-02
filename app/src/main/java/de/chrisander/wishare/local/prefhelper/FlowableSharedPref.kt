@@ -78,14 +78,19 @@ fun <T> SharedPreferences.flowChangesObjectList(
     key
 ).map { getObjectList(key, defValue, clazz, moshi) }
 
-inline fun <reified T> SharedPreferences.flowChangesObject(key: String, defValue: T, clazz: Class<T>) = notifyOnChange(
-    key
-).map { getObject(key, defValue, clazz) }
+inline fun <reified T> SharedPreferences.flowChangesObject(
+    key: String,
+    defValue: T,
+    clazz: Class<T>,
+    moshi: Moshi
+) = notifyOnChange(key).map { getObject(key, defValue, clazz, moshi) }
 
-inline fun <reified T> SharedPreferences.flowChangesNullableObject(key: String, defValue: T?, clazz: Class<T>) =
-    notifyOnChange(
-        key
-    ).map { getNullableObject(key, defValue, clazz) }
+inline fun <reified T> SharedPreferences.flowChangesNullableObject(
+    key: String,
+    defValue: T?,
+    clazz: Class<T>,
+    moshi: Moshi
+) = notifyOnChange(key).map { getNullableObject(key, defValue, clazz, moshi) }
 
 class SharedPreferenceProperty<T>(
     private val prefs: SharedPreferences,
@@ -338,8 +343,12 @@ inline fun <reified T> SharedPreferences.getNullableObject(
 ): T? {
     val jsonString = this.getString(customName, "") ?: return defValue
     try {
-        val type = Types.newParameterizedType(clazz)
-        val adapter = moshi.adapter<T>(type)
+        val adapter = try {
+            val type = Types.newParameterizedType(clazz)
+            moshi.adapter<T>(type)
+        } catch (e: Exception){
+            moshi.adapter(clazz)
+        }
         return adapter.fromJson(jsonString) ?: defValue
     } catch (e: Exception) {
         Timber.e(e)
@@ -353,8 +362,12 @@ inline fun <reified T> SharedPreferences.Editor.setObject(
     clazz: Class<T>,
     moshi: Moshi = Moshi.Builder().build()
 ): SharedPreferences.Editor {
-    val type = Types.newParameterizedType(clazz)
-    val adapter = moshi.adapter<T>(type)
+    val adapter = try {
+        val type = Types.newParameterizedType(clazz)
+        moshi.adapter<T>(type)
+    } catch (e: Exception){
+        moshi.adapter(clazz)
+    }
     val jsonString = adapter.toJson(o)
     return this.putString(customName, jsonString)
 }

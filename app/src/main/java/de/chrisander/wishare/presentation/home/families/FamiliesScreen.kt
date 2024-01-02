@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import de.chrisander.wishare.di.appPreviewModules
 import de.chrisander.wishare.domain.model.Family
+import de.chrisander.wishare.presentation.destinations.FamilyScreenDestination
+import de.chrisander.wishare.presentation.destinations.WishlistMembersScreenDestination
 import de.chrisander.wishare.presentation.di.PreviewData
 import de.chrisander.wishare.presentation.home.families.components.EmptyFamilyScreen
 import de.chrisander.wishare.presentation.home.families.components.FamilyList
@@ -19,16 +22,26 @@ import org.koin.core.qualifier.named
 @Composable
 fun FamiliesScreen(
     modifier: Modifier = Modifier,
-    viewModel: FamiliesViewModel = koinViewModel()
+    viewModel: FamiliesViewModel = koinViewModel(),
+    navigator: DestinationsNavigator
 ) {
     val state = viewModel.state.value
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is FamiliesViewModelEvent.NavigateToEditFamily -> TODO()
-                FamiliesViewModelEvent.NavigateToCreateFamily -> TODO()
-                FamiliesViewModelEvent.NavigateToJoinFamily -> TODO()
+                is FamiliesViewModelEvent.NavigateToEditFamily -> {
+                    navigator.navigate(FamilyScreenDestination(familyId = event.familyId))
+                }
+                FamiliesViewModelEvent.NavigateToCreateFamily -> {
+                    navigator.navigate(FamilyScreenDestination(familyId = null))
+                }
+                FamiliesViewModelEvent.NavigateToJoinFamily -> {
+                    TODO()
+                }
+                is FamiliesViewModelEvent.NavigateToFamily -> {
+                    navigator.navigate(WishlistMembersScreenDestination(event.familyId))
+                }
             }
         }
     }
@@ -38,8 +51,8 @@ fun FamiliesScreen(
         screenState = state,
         onCreateFamilyClicked = { viewModel.onEvent(FamiliesUiEvent.OnCreateFamilyClicked) },
         onJoinFamilyClicked = { viewModel.onEvent(FamiliesUiEvent.OnJoinFamilyClicked) },
-        onClicked = { viewModel.onEvent(FamiliesUiEvent.OnFamilyClicked(it)) },
-        onEditClicked = { viewModel.onEvent(FamiliesUiEvent.OnEditFamilyClicked(it)) }
+        onFamilyClicked = { viewModel.onEvent(FamiliesUiEvent.OnFamilyClicked(it)) },
+        onEditFamilyClicked = { viewModel.onEvent(FamiliesUiEvent.OnEditFamilyClicked(it)) },
     )
 }
 
@@ -49,8 +62,8 @@ fun FamiliesContent(
     screenState: FamiliesScreenState,
     onCreateFamilyClicked: () -> Unit = {},
     onJoinFamilyClicked: () -> Unit = {},
-    onClicked: (Family) -> Unit = {},
-    onEditClicked: (Family) -> Unit = {},
+    onFamilyClicked: (Family) -> Unit = {},
+    onEditFamilyClicked: (Family) -> Unit = {},
 ){
     when(screenState){
         FamiliesScreenState.Empty -> {
@@ -64,8 +77,9 @@ fun FamiliesContent(
             FamilyList(
                 modifier = modifier,
                 families = screenState.families,
-                onClicked = onClicked,
-                onEditClicked = onEditClicked,
+                onFamilyClicked = onFamilyClicked,
+                onEditFamilyClicked = onEditFamilyClicked,
+                onAddFamilyClicked = onCreateFamilyClicked
             )
         }
     }

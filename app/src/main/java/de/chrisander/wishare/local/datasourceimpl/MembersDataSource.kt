@@ -11,6 +11,6 @@ class MembersDataSource(
 ): IMembersDataSource {
     override var members: List<FamilyMember> by prefHelper::members
     override val membersFlow: Flow<List<FamilyMember>> = prefHelper.membersFlow
-    override val appOwnerId: FamilyMemberId? by prefHelper::appOwnerId
+    override var appOwnerId: FamilyMemberId? by prefHelper::appOwnerId
     override val appOwnerIdFlow: Flow<FamilyMemberId?> = prefHelper.appOwnerIdFlow
 }
