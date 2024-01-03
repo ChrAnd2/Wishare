@@ -41,6 +41,7 @@ class HomeViewModel(
                 is HomeScreenState.MyWishes -> {
                     HomeScreenState.MyWishes(myWishes = appOwner.wishes)
                 }
+                HomeScreenState.Settings -> HomeScreenState.Settings
             }
         }.launchIn(viewModelScope)
     }
@@ -63,6 +64,7 @@ class HomeViewModel(
                             }
                         }
                     )
+                    BottomMenuContent.Settings -> _state.value = HomeScreenState.Settings
                 }
             }
         }

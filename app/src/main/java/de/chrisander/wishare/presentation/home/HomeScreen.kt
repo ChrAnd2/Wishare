@@ -15,6 +15,7 @@ import de.chrisander.wishare.presentation.home.components.BottomMenuContent
 import de.chrisander.wishare.presentation.home.families.FamiliesScreen
 import de.chrisander.wishare.presentation.home.my_gifts.MyGiftsScreen
 import de.chrisander.wishare.presentation.home.my_wishes.MyWishesScreen
+import de.chrisander.wishare.presentation.home.settings.SettingsScreen
 import de.chrisander.wishare.presentation.navigation.HomeNavGraph
 import de.chrisander.wishare.ui.theme.WishareTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -66,11 +67,16 @@ fun HomeContent(
                 modifier = Modifier.weight(1f),
                 navigator = navigator
             )
+            HomeScreenState.Settings -> SettingsScreen(
+                modifier = Modifier.weight(1f),
+                navigator = navigator
+            )
         }
         val bottomContent = listOf(
             BottomMenuContent.Families,
             BottomMenuContent.MyWishes,
             BottomMenuContent.MyGifts,
+            BottomMenuContent.Settings
         )
         BottomMenu(
             items = bottomContent,
@@ -78,6 +84,7 @@ fun HomeContent(
                 is HomeScreenState.Families -> bottomContent.indexOf(BottomMenuContent.Families)
                 is HomeScreenState.MyWishes -> bottomContent.indexOf(BottomMenuContent.MyWishes)
                 is HomeScreenState.MyGifts -> bottomContent.indexOf(BottomMenuContent.MyGifts)
+                HomeScreenState.Settings -> bottomContent.indexOf(BottomMenuContent.Settings)
             },
             onItemClick = onBottomMenuItemClicked
         )

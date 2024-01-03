@@ -40,4 +40,8 @@
     <string name="wish_url_placeholder">Wish url</string>
     <string name="delete_wish">Delete Wish</string>
     <string name="error_invalid_url">Invalid URL</string>
+    <string name="web_client_id">942847687623-mf8es5c6jjvi3s526nm7oc3tvpluq80m.apps.googleusercontent.com</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="settings">Settings</string>
 </resources>

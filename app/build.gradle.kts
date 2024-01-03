@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version "1.9.21-1.0.16"
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -88,4 +89,11 @@ dependencies {
 
     // Kotlin Result
     implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.18")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }
